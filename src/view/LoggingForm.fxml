@@ -1,14 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.LoggingFormController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane fx:id="context" prefHeight="570.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoggingFormController">
+   <children>
+      <ImageView fitHeight="570.0" fitWidth="1015.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assert/nomads-brisbane-hostel.jpg" />
+         </image>
+         <effect>
+            <Blend mode="DARKEN" />
+         </effect>
+      </ImageView>
+      <Pane layoutX="477.0" layoutY="36.0" prefHeight="570.0" prefWidth="423.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="477.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <effect>
+            <DropShadow height="0.0" radius="1.7850000000000001" width="9.14" />
+         </effect>
+         <children>
+            <Text fill="#a8a8a8" layoutX="172.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME TO">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+            <JFXTextField fx:id="txtUserName" layoutX="118.0" layoutY="200.0" onAction="#goToPassword" prefHeight="36.0" prefWidth="226.0" promptText="Username" />
+            <JFXPasswordField fx:id="txtPassword" layoutX="118.0" layoutY="270.0" onAction="#goToLoginPage" prefHeight="36.0" prefWidth="226.0" promptText="Password" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="80.0" layoutY="207.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assert/User_Icon.png" />
+               </image>
+               <effect>
+                  <ColorAdjust contrast="-1.0" hue="1.0" saturation="1.0" />
+               </effect>
+            </ImageView>
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="80.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assert/Password_Icon.png" />
+               </image>
+               <effect>
+                  <ColorAdjust contrast="-1.0" hue="1.0" saturation="1.0" />
+               </effect>
+            </ImageView>
+            <Label alignment="CENTER" layoutY="516.0" prefHeight="26.0" prefWidth="423.0" style="-fx-background-color: white;" text="Copyright 2022 Supermarket" textFill="#000000ad">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="540.0" prefHeight="26.0" prefWidth="423.0" style="-fx-background-color: white;" text="All Right Reserved Design By Kavindu Thiwanka" textAlignment="CENTER" textFill="#000000ae">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <JFXButton buttonType="RAISED" layoutX="223.0" layoutY="373.0" onAction="#goToLoginPage" prefHeight="36.0" prefWidth="165.0" style="-fx-background-color: #30cf98; -fx-background-radius: 360;" text="LOGIN" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="36.0" layoutY="373.0" onAction="#goToCanclePage" prefHeight="36.0" prefWidth="165.0" style="-fx-background-color: #30cf98; -fx-background-radius: 360;" text="CANCEL" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </JFXButton>
+            <Text fontSmoothingType="LCD" layoutX="32.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pearl Hostel" textAlignment="CENTER" wrappingWidth="358.650390625">
+               <font>
+                  <Font name="System Bold" size="52.0" />
+               </font>
+            </Text>
+            <Label fx:id="lblError" layoutX="51.0" layoutY="462.0" prefHeight="25.0" prefWidth="321.0" textFill="#f82121">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
 </AnchorPane>
