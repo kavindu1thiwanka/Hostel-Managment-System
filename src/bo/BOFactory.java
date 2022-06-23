@@ -2,6 +2,7 @@ package bo;
 
 
 import bo.impl.LoginBOImpl;
+import bo.impl.RoomBOImpl;
 import bo.impl.StudentBOImpl;
 
 public class BOFactory { private static BOFactory boFactory;
@@ -16,6 +17,8 @@ public class BOFactory { private static BOFactory boFactory;
         switch (boType){
             case STUDENT:
                 return (T) new StudentBOImpl();
+            case ROOM:
+                return (T) new RoomBOImpl();
             default:
                 return null;
         }

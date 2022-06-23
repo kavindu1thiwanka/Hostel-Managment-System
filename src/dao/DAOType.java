@@ -1,5 +1,5 @@
 package dao;
 
 public enum DAOType {
-    STUDENT, LOGIN
+    STUDENT, LOGIN , ROOM
 }
