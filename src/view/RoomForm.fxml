@@ -52,8 +52,8 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </JFXButton>
-      <JFXComboBox fx:id="cmbRoomType" labelFloat="true" layoutX="53.0" layoutY="121.0" prefHeight="38.0" prefWidth="336.0" promptText="Room Type :" styleClass="combo" stylesheets="@../styles/place_order.css" />
-      <JFXTextField fx:id="txtQty" labelFloat="true" layoutX="423.0" layoutY="127.0" onKeyReleased="#textFields_Key_Released" prefHeight="31.0" prefWidth="337.0" promptText="Qty :">
+      <JFXComboBox fx:id="cmbRoomType" labelFloat="true" layoutX="53.0" layoutY="124.0" prefHeight="38.0" prefWidth="336.0" promptText="Room Type :" styleClass="combo" stylesheets="@../styles/place_order.css" />
+      <JFXTextField fx:id="txtQty" labelFloat="true" layoutX="423.0" layoutY="130.0" onKeyReleased="#textFields_Key_Released" prefHeight="31.0" prefWidth="337.0" promptText="Qty :">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -94,7 +94,7 @@
             <ColorAdjust brightness="-1.0" contrast="-1.0" />
          </effect>
       </Label>
-      <JFXTextField fx:id="txtMonthlyRent" labelFloat="true" layoutX="53.0" layoutY="179.0" prefHeight="29.0" prefWidth="707.0" promptText="Monthly Rental (LKR) :">
+      <JFXTextField fx:id="txtMonthlyRent" labelFloat="true" layoutX="53.0" layoutY="183.0" prefHeight="29.0" prefWidth="707.0" promptText="Monthly Rental (LKR) :">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>

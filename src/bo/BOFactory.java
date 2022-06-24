@@ -1,27 +1,54 @@
 package bo;
 
 
-import bo.impl.LoginBOImpl;
 import bo.impl.RoomBOImpl;
 import bo.impl.StudentBOImpl;
 
-public class BOFactory { private static BOFactory boFactory;
+public class BOFactory {
+//    private static BOFactory boFactory;
 
-    private BOFactory(){}
+//    private BOFactory(){}
+//
+//    public static BOFactory getInstance(){
+//        return (null == boFactory) ? boFactory = new BOFactory() : boFactory;
+//    }
+//
+//    public <T extends bo.SuperBO> T getBO(bo.BOType boType){
+//        switch (boType){
+//            case STUDENT:
+//                return (T) new StudentBOImpl();
+//            case ROOM:
+//                return (T) new RoomBOImpl();
+//            default:
+//                return null;
+//        }
+//    }
 
-    public static BOFactory getInstance(){
-        return (null == boFactory) ? boFactory = new BOFactory() : boFactory;
+    private static BOFactory boFactory;
+
+    private BOFactory() {
     }
 
-    public <T extends bo.SuperBO> T getBO(bo.BOType boType){
-        switch (boType){
+    public static BOFactory getBOFactory() {
+        if (boFactory == null) {
+            boFactory = new BOFactory();
+        }
+        return boFactory;
+    }
+
+    public SuperBO getBO(BoTypes types) {
+        switch (types) {
             case STUDENT:
-                return (T) new StudentBOImpl();
+                return new StudentBOImpl();
             case ROOM:
-                return (T) new RoomBOImpl();
+                return new RoomBOImpl();
+
             default:
                 return null;
         }
     }
 
+    public enum BoTypes {
+        STUDENT, ROOM
+    }
 }

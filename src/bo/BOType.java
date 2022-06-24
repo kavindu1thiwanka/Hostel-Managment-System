@@ -1,5 +1,5 @@
-package bo;
-
-public enum BOType {
-    STUDENT , ROOM
-}
+//package bo;
+//
+//public enum BOType {
+//    STUDENT , ROOM
+//}

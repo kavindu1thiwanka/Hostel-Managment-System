@@ -1,7 +1,7 @@
 package controller;
 
 import bo.BOFactory;
-import bo.BOType;
+
 import bo.custom.LoginBO;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;

@@ -1,6 +1,7 @@
 package bo.impl;
 
 
+import bo.SuperBO;
 import bo.custom.StudentBO;
 import dao.DAOFactory;
 import dao.DAOType;
@@ -8,7 +9,7 @@ import dao.impl.StudentDAOImpl;
 import dto.StudentDTO;
 import entity.Student;
 
-public class StudentBOImpl implements StudentBO {
+public class StudentBOImpl implements StudentBO, SuperBO {
 
     StudentDAOImpl studentDAO = DAOFactory.getInstance().getDAO(DAOType.STUDENT);
 

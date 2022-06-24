@@ -60,11 +60,6 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </JFXTextField>
-      <JFXTextField fx:id="txtRoomNum" labelFloat="true" layoutX="53.0" layoutY="181.0" onKeyReleased="#textFields_Key_Released" prefHeight="29.0" prefWidth="337.0" promptText="Room Number :">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </JFXTextField>
       <Label layoutX="86.0" prefHeight="52.0" prefWidth="543.0" text="Manage Students" textOverrun="CLIP">
          <font>
             <Font name="Arial Bold" size="23.0" />
@@ -102,5 +97,6 @@
          </font>
       </JFXButton>
       <JFXComboBox fx:id="cmbKeyMoney" labelFloat="true" layoutX="424.0" layoutY="175.0" prefHeight="38.0" prefWidth="336.0" promptText="Key Money Status :" styleClass="combo" stylesheets="@../styles/place_order.css" />
+      <JFXComboBox fx:id="cmbRoomNum" labelFloat="true" layoutX="54.0" layoutY="174.0" prefHeight="38.0" prefWidth="336.0" promptText="Room Number  :" styleClass="combo" stylesheets="@../styles/place_order.css" />
    </children>
 </AnchorPane>

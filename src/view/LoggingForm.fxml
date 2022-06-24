@@ -62,12 +62,12 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <JFXButton buttonType="RAISED" layoutX="223.0" layoutY="378.0" onAction="#goToLoginPage" prefHeight="36.0" prefWidth="165.0" style="-fx-background-color: #30cf98; -fx-background-radius: 360;" text="LOGIN" textFill="WHITE">
+            <JFXButton buttonType="RAISED" layoutX="223.0" layoutY="377.0" onAction="#goToLoginPage" prefHeight="36.0" prefWidth="165.0" style="-fx-background-color: #30cf98; -fx-background-radius: 360;" text="LOGIN" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="36.0" layoutY="378.0" onAction="#goToCanclePage" prefHeight="36.0" prefWidth="165.0" style="-fx-background-color: #30cf98; -fx-background-radius: 360;" text="CANCEL" textFill="WHITE">
+            <JFXButton buttonType="RAISED" layoutX="36.0" layoutY="377.0" onAction="#goToCanclePage" prefHeight="36.0" prefWidth="165.0" style="-fx-background-color: #30cf98; -fx-background-radius: 360;" text="CANCEL" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -77,9 +77,9 @@
                   <Font name="System Bold" size="52.0" />
                </font>
             </Text>
-            <Label fx:id="lblError" layoutX="51.0" layoutY="461.0" prefHeight="25.0" prefWidth="321.0" textFill="#f82121">
+            <Label fx:id="lblError" layoutX="63.0" layoutY="456.0" prefHeight="25.0" prefWidth="321.0" textFill="#f82121">
                <font>
-                  <Font name="System Bold" size="16.0" />
+                  <Font size="14.0" />
                </font>
             </Label>
          </children>

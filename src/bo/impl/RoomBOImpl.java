@@ -1,5 +1,6 @@
 package bo.impl;
 
+import bo.SuperBO;
 import bo.custom.RoomBO;
 import bo.custom.StudentBO;
 import dao.DAOFactory;
@@ -9,7 +10,7 @@ import dto.RoomDTO;
 import entity.Room;
 
 
-public class RoomBOImpl implements RoomBO {
+public class RoomBOImpl implements RoomBO, SuperBO {
     RoomDAOImpl roomDAO = DAOFactory.getInstance().getDAO(DAOType.ROOM);
 
     @Override

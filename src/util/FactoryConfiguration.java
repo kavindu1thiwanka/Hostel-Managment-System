@@ -1,6 +1,7 @@
 package util;
 
 import entity.Login;
+import entity.Room;
 import entity.Student;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,6 +14,7 @@ public class FactoryConfiguration {
     private FactoryConfiguration() {
         Configuration configuration = new Configuration().configure("/resources/hibernate.cfg.xml")
                 .addAnnotatedClass(Student.class)
+                .addAnnotatedClass(Room.class)
                 .addAnnotatedClass(Login.class);
 
         sessionFactory = configuration.buildSessionFactory();
@@ -21,6 +23,7 @@ public class FactoryConfiguration {
         return (factoryConfiguration == null) ? factoryConfiguration = new FactoryConfiguration()
                 : factoryConfiguration;
     }
+
     public Session getSession() {
         return sessionFactory.openSession();
     }
