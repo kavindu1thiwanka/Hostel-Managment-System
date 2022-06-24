@@ -29,14 +29,14 @@
             <DropShadow height="0.0" radius="1.7850000000000001" width="9.14" />
          </effect>
          <children>
-            <Text fill="#a8a8a8" layoutX="172.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME TO">
+            <Text fill="#a8a8a8" layoutX="172.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WELCOME TO">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Text>
-            <JFXTextField fx:id="txtUserName" layoutX="118.0" layoutY="200.0" onAction="#goToPassword" prefHeight="36.0" prefWidth="226.0" promptText="Username" />
-            <JFXPasswordField fx:id="txtPassword" layoutX="118.0" layoutY="270.0" onAction="#goToLoginPage" prefHeight="36.0" prefWidth="226.0" promptText="Password" />
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="80.0" layoutY="207.0" pickOnBounds="true" preserveRatio="true">
+            <JFXTextField fx:id="txtUserName" layoutX="118.0" layoutY="205.0" onAction="#goToPassword" prefHeight="36.0" prefWidth="226.0" promptText="Username" />
+            <JFXPasswordField fx:id="txtPassword" layoutX="118.0" layoutY="275.0" onAction="#goToLoginPage" prefHeight="36.0" prefWidth="226.0" promptText="Password" />
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="80.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assert/User_Icon.png" />
                </image>
@@ -44,7 +44,7 @@
                   <ColorAdjust contrast="-1.0" hue="1.0" saturation="1.0" />
                </effect>
             </ImageView>
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="80.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="80.0" layoutY="282.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assert/Password_Icon.png" />
                </image>
@@ -62,22 +62,22 @@
                   <Font size="10.0" />
                </font>
             </Label>
-            <JFXButton buttonType="RAISED" layoutX="223.0" layoutY="373.0" onAction="#goToLoginPage" prefHeight="36.0" prefWidth="165.0" style="-fx-background-color: #30cf98; -fx-background-radius: 360;" text="LOGIN" textFill="WHITE">
+            <JFXButton buttonType="RAISED" layoutX="223.0" layoutY="378.0" onAction="#goToLoginPage" prefHeight="36.0" prefWidth="165.0" style="-fx-background-color: #30cf98; -fx-background-radius: 360;" text="LOGIN" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="36.0" layoutY="373.0" onAction="#goToCanclePage" prefHeight="36.0" prefWidth="165.0" style="-fx-background-color: #30cf98; -fx-background-radius: 360;" text="CANCEL" textFill="WHITE">
+            <JFXButton buttonType="RAISED" layoutX="36.0" layoutY="378.0" onAction="#goToCanclePage" prefHeight="36.0" prefWidth="165.0" style="-fx-background-color: #30cf98; -fx-background-radius: 360;" text="CANCEL" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </JFXButton>
-            <Text fontSmoothingType="LCD" layoutX="32.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pearl Hostel" textAlignment="CENTER" wrappingWidth="358.650390625">
+            <Text fontSmoothingType="LCD" layoutX="32.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aloha Hostel" textAlignment="CENTER" wrappingWidth="358.650390625">
                <font>
                   <Font name="System Bold" size="52.0" />
                </font>
             </Text>
-            <Label fx:id="lblError" layoutX="51.0" layoutY="462.0" prefHeight="25.0" prefWidth="321.0" textFill="#f82121">
+            <Label fx:id="lblError" layoutX="51.0" layoutY="461.0" prefHeight="25.0" prefWidth="321.0" textFill="#f82121">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
