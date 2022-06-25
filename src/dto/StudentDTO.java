@@ -11,6 +11,7 @@ public class StudentDTO {
     private String id;
     private String fullName;
     private String address;
-    private String roomNum;
-    private String keyMoneyStatus;
+    private String contactNo;
+    private String dob;
+    private String sex;
 }

@@ -1,7 +1,7 @@
 package controller;
 
 import bo.BOFactory;
-import bo.impl.RoomBOImpl;
+import bo.custom.RoomBO;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -17,18 +17,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import view.tm.RoomTM;
+import view.tm.StudentTM;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class RoomFormController {
     public AnchorPane root;
     public JFXTextField txtRoomId;
-    public TableView tblStudent;
     public TableColumn colRoomId;
     public TableColumn colRoomType;
     public TableColumn colMonthlyRent;
@@ -39,13 +43,49 @@ public class RoomFormController {
     public JFXComboBox cmbRoomType;
     public JFXTextField txtQty;
     public JFXTextField txtMonthlyRent;
+    public TableView<RoomTM> tblRoom;
 
-//    RoomBOImpl roomBOImpl = BOFactory.getInstance().getBO(BOType.ROOM);
-private final RoomBOImpl roomBOImpl = (RoomBOImpl) BOFactory.getBOFactory().getBO(BOFactory.BoTypes.ROOM);
+    private final RoomBO roomBO = (RoomBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.ROOM);
 
     public void initialize(){
         ObservableList roomType = FXCollections.observableArrayList("Non-AC","Non-AC / Food","AC","AC / Food");
         cmbRoomType.getItems().addAll(roomType);
+
+
+        colRoomId.setCellValueFactory(new PropertyValueFactory<>("room_id"));
+        colRoomType.setCellValueFactory(new PropertyValueFactory<>("room_type"));
+        colMonthlyRent.setCellValueFactory(new PropertyValueFactory<>("monthly_rent"));
+        colQty.setCellValueFactory(new PropertyValueFactory<>("room_qty"));
+
+        loadAllStudents();
+//        storeValidations();
+
+        tblRoom.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                txtRoomId.setText(newValue.getRoom_id());
+                cmbRoomType.setValue(String.valueOf(newValue.getRoom_type()));
+                txtMonthlyRent.setText(String.valueOf(newValue.getMonthly_rent()));
+                txtQty.setText(String.valueOf(newValue.getRoom_qty()));
+                btnSave.setDisable(true);
+                if (btnSave.isDisable()){
+                    txtRoomId.setDisable(true);
+                }
+            }
+        });
+    }
+
+    private void loadAllStudents() {
+        tblRoom.getItems().clear();
+        try {
+            ArrayList<RoomDTO> allRoom = roomBO.getAllRooms();
+            for (RoomDTO room : allRoom) {
+                tblRoom.getItems().add(new RoomTM(room.getRoom_id(),room.getRoom_type(),room.getMonthly_rent(),room.getRoom_qty()));
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
     public void clearFields() {
@@ -83,6 +123,32 @@ private final RoomBOImpl roomBOImpl = (RoomBOImpl) BOFactory.getBOFactory().getB
     }
 
     public void btnDelete_OnAction(ActionEvent actionEvent) {
+        String id = tblRoom.getSelectionModel().getSelectedItem().getRoom_id();
+        try {
+            if (!existRoom(id)) {
+                new Alert(Alert.AlertType.ERROR, "There is no such course associated with the id " + id).show();
+            }else{
+                new Alert(Alert.AlertType.CONFIRMATION, "Deleted...!").show();
+                roomBO.delete(id);
+                tblRoom.getItems().remove(tblRoom.getSelectionModel().getSelectedItem());
+                tblRoom.getSelectionModel().clearSelection();
+                clearFields();
+                btnSave.setDisable(false);
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to delete the course " + id).show();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        btnSave.setDisable(false);
+        txtRoomId.setDisable(false);
+        txtRoomId.setText("");
+    }
+
+    boolean existRoom(String id) throws SQLException, ClassNotFoundException {
+        return roomBO.ifRoomExist(id);
     }
 
     public void btnUpdate_OnAction(ActionEvent actionEvent) {
@@ -92,7 +158,7 @@ private final RoomBOImpl roomBOImpl = (RoomBOImpl) BOFactory.getBOFactory().getB
         int qty = Integer.parseInt(txtQty.getText());
 
         try {
-            if(roomBOImpl.update(new RoomDTO(id, type, rent,qty))) {
+            if(roomBO.update(new RoomDTO(id, type, rent,qty))) {
                 new Alert(Alert.AlertType.CONFIRMATION, "Updated.!").show();
                 clearFields();
             } else {
@@ -101,6 +167,10 @@ private final RoomBOImpl roomBOImpl = (RoomBOImpl) BOFactory.getBOFactory().getB
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Something Happened").show();
         }
+        btnSave.setDisable(false);
+        txtRoomId.setDisable(false);
+        txtRoomId.setText("");
+        loadAllStudents();
     }
 
     public void btnSave_OnAction(ActionEvent actionEvent) {
@@ -110,13 +180,20 @@ private final RoomBOImpl roomBOImpl = (RoomBOImpl) BOFactory.getBOFactory().getB
         int qty = Integer.parseInt(txtQty.getText());
 
         try {
-            if (roomBOImpl.add(new RoomDTO(id, type, rent,qty))) {
+            if (roomBO.add(new RoomDTO(id, type, rent,qty))) {
                 new Alert(Alert.AlertType.CONFIRMATION, "Saved.!").show();
                 clearFields();
             }
         } catch (Exception e) {
             System.out.println(e);
             new Alert(Alert.AlertType.ERROR, "Something Happened. try again carefully!").showAndWait();
+        }
+        loadAllStudents();
+    }
+
+    public void setTextOnMouseClick(MouseEvent mouseEvent) {
+        if (txtRoomId.getText().equals("")){
+            txtRoomId.setText("RM-");
         }
     }
 }

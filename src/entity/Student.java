@@ -19,7 +19,10 @@ public class Student implements SuperEntity{
     private String fullName;
     @Column(columnDefinition = "TEXT")
     private String address;
-    private String roomNum;
-    private String keyMoneyStatus;
+    private String contactNo;
+    @Column(columnDefinition = "DATE")
+    private String dob;
+    private String sex;
+
 
 }

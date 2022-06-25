@@ -1,25 +1,64 @@
 package controller;
 
+import dto.StudentDTO;
+import entity.Room;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+import util.FactoryConfiguration;
+import view.tm.KeyMoneyTM;
+import view.tm.StudentTM;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KeyMoneyFormController {
     public AnchorPane root;
-    public TableView tblKeyMoney;
+    public TableView<KeyMoneyTM> tblKeyMoney;
     public TableColumn colId;
     public TableColumn colName;
     public TableColumn colRoomNum;
+
+    public void initialize(){
+
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        colRoomNum.setCellValueFactory(new PropertyValueFactory<>("room_id"));
+
+        loadAllStudents();
+    }
+
+    private void loadAllStudents() {
+//        tblKeyMoney.getItems().clear();
+//        try {
+//            ArrayList<StudentDTO> allStudent = studentBO.getAllStudent();
+//            for (StudentDTO student : allStudent) {
+//                tblStudent.getItems().add(new StudentTM(student.getId(),student.getFullName(),student.getAddress(),student.getRoomNum(),student.getKeyMoneyStatus()));
+//            }
+//        } catch (SQLException e) {
+//            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+//        } catch (ClassNotFoundException e) {
+//            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+//        }
+    }
+
 
     public void closeWindowOnAction(ActionEvent actionEvent) {
         javafx.application.Platform.exit();

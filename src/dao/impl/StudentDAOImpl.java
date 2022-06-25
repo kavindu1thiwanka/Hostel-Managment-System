@@ -4,8 +4,11 @@ import dao.custom.StudentDAO;
 import entity.Student;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import util.FactoryConfiguration;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentDAOImpl implements StudentDAO {
@@ -55,5 +58,46 @@ public class StudentDAOImpl implements StudentDAO {
     @Override
     public List<Student> findAll() throws Exception {
         return null;
+    }
+
+    @Override
+    public String generateNewID(){
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createSQLQuery("SELECT id FROM student ORDER BY id DESC LIMIT 1");
+        String s = (String) query.uniqueResult();
+        transaction.commit();
+        session.close();
+        if (s!=null) {
+            int newCourseId = Integer.parseInt(s.replace("S", "")) + 1;
+            return String.format("S%03d", newCourseId);
+        }
+        return "S001";
+    }
+
+    @Override
+    public ArrayList<Student> getAll() throws SQLException, ClassNotFoundException {
+        ArrayList<Student> allStudent = new ArrayList();
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("FROM student ");
+        allStudent = (ArrayList<Student>) query.list();
+        transaction.commit();
+        session.close();
+        return allStudent;
+    }
+
+    @Override
+    public boolean ifStudentExist(String Id) throws SQLException, ClassNotFoundException {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("SELECT id FROM student WHERE id=:Id");
+        String id1 = (String) query.setParameter("Id", Id).uniqueResult();
+        if (id1 != null) {
+            return true;
+        }
+        transaction.commit();
+        session.close();
+        return false;
     }
 }

@@ -1,17 +1,30 @@
 package bo.impl;
 
 
+import bo.BOFactory;
 import bo.SuperBO;
 import bo.custom.StudentBO;
 import dao.DAOFactory;
-import dao.DAOType;
 import dao.impl.StudentDAOImpl;
 import dto.StudentDTO;
 import entity.Student;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 public class StudentBOImpl implements StudentBO, SuperBO {
 
-    StudentDAOImpl studentDAO = DAOFactory.getInstance().getDAO(DAOType.STUDENT);
+private final StudentDAOImpl studentDAO = (StudentDAOImpl) DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.STUDENT);
+
+    @Override
+    public ArrayList<StudentDTO> getAllStudent() throws SQLException, ClassNotFoundException {
+        ArrayList<StudentDTO> allStudent = new ArrayList<>();
+        ArrayList<Student> all = studentDAO.getAll();
+        for (Student program : all) {
+            allStudent.add(new StudentDTO(program.getId(),program.getFullName(),program.getAddress(),program.getContactNo(),program.getDob(),program.getSex()));
+        }
+        return allStudent;
+    }
 
     @Override
     public boolean add(StudentDTO studentDTO) throws Exception {
@@ -19,8 +32,9 @@ public class StudentBOImpl implements StudentBO, SuperBO {
                 studentDTO.getId(),
                 studentDTO.getFullName(),
                 studentDTO.getAddress(),
-                studentDTO.getRoomNum(),
-                studentDTO.getKeyMoneyStatus()
+                studentDTO.getContactNo(),
+                studentDTO.getDob(),
+                studentDTO.getSex()
         ));
     }
 
@@ -30,14 +44,25 @@ public class StudentBOImpl implements StudentBO, SuperBO {
                 studentDTO.getId(),
                 studentDTO.getFullName(),
                 studentDTO.getAddress(),
-                studentDTO.getRoomNum(),
-                studentDTO.getKeyMoneyStatus()
+                studentDTO.getContactNo(),
+                studentDTO.getDob(),
+                studentDTO.getSex()
         ));
     }
 
     @Override
     public boolean delete(String id) throws Exception {
         return studentDAO.delete(id);
+    }
+
+    @Override
+    public String generateNewID() {
+        return studentDAO.generateNewID();
+    }
+
+    @Override
+    public boolean ifStudentExist(String id) throws SQLException, ClassNotFoundException {
+        return studentDAO.ifStudentExist(id);
     }
 
 }

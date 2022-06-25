@@ -1,6 +1,7 @@
 package util;
 
 import entity.Login;
+import entity.Reserve;
 import entity.Room;
 import entity.Student;
 import org.hibernate.Session;
@@ -15,6 +16,7 @@ public class FactoryConfiguration {
         Configuration configuration = new Configuration().configure("/resources/hibernate.cfg.xml")
                 .addAnnotatedClass(Student.class)
                 .addAnnotatedClass(Room.class)
+                .addAnnotatedClass(Reserve.class)
                 .addAnnotatedClass(Login.class);
 
         sessionFactory = configuration.buildSessionFactory();

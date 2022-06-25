@@ -17,12 +17,19 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="root" prefHeight="570.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StudentFormController">
+<AnchorPane fx:id="root" prefHeight="570.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReserveFormController">
    <children>
       <Pane layoutX="60.0" layoutY="52.0" prefHeight="51.0" prefWidth="900.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="519.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <effect>
             <DropShadow color="#00000052" height="25.24" radius="5.81" width="0.0" />
          </effect>
+         <children>
+            <JFXButton id="btnUpdate" fx:id="btnAddNewStudent" layoutX="647.0" layoutY="14.0" onAction="#btnAddNewStudent_OnAction" prefHeight="15.0" prefWidth="147.0" ripplerFill="WHITE" style="-fx-cursor: hand; -fx-background-radius: 360; -fx-background-color: #87ff83;" text="+ Add New Student">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </JFXButton>
+         </children>
       </Pane>
       <Circle fill="RED" layoutX="865.0" layoutY="27.0" opacity="0.65" radius="12.0" stroke="TRANSPARENT" strokeType="INSIDE" />
       <FontAwesomeIconView fill="#000000c3" fontSmoothingType="LCD" glyphName="CLOSE" layoutX="859.0" layoutY="32.0" size="15" />
@@ -45,22 +52,17 @@
          </children>
       </Pane>
       <JFXButton contentDisplay="CENTER" ellipsisString="" layoutX="20.0" layoutY="13.0" onMouseClicked="#navigateToHome" prefHeight="24.0" prefWidth="49.0" ripplerFill="WHITE" style="-fx-background-radius: 360;" textFill="TRANSPARENT" textOverrun="CLIP" />
-      <JFXTextField fx:id="txtStudentId" labelFloat="true" layoutX="53.0" layoutY="76.0" prefHeight="29.0" prefWidth="707.0" promptText="Student ID :">
+      <JFXTextField fx:id="txtReserveId" labelFloat="true" layoutX="53.0" layoutY="76.0" prefHeight="29.0" prefWidth="707.0" promptText="Reserve ID :">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </JFXTextField>
-      <JFXTextField fx:id="txtStudentName" labelFloat="true" layoutX="53.0" layoutY="128.0" onKeyReleased="#textFields_Key_Released" prefHeight="31.0" prefWidth="337.0" promptText="Student Name :">
+      <JFXTextField fx:id="txtKeyMoney" labelFloat="true" layoutX="53.0" layoutY="128.0" onKeyReleased="#textFields_Key_Released" prefHeight="31.0" prefWidth="707.0" promptText="Key Money (LKR) :">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </JFXTextField>
-      <JFXTextField fx:id="txtStudentAddress" labelFloat="true" layoutX="423.0" layoutY="128.0" onKeyReleased="#textFields_Key_Released" prefHeight="31.0" prefWidth="337.0" promptText="Student Address :">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </JFXTextField>
-      <Label layoutX="86.0" prefHeight="52.0" prefWidth="543.0" text="Manage Students" textOverrun="CLIP">
+      <Label layoutX="86.0" prefHeight="52.0" prefWidth="543.0" text="Reserve Room" textOverrun="CLIP">
          <font>
             <Font name="Arial Bold" size="23.0" />
          </font>
@@ -68,14 +70,13 @@
             <ColorAdjust brightness="-1.0" contrast="-1.0" />
          </effect>
       </Label>
-      <TableView fx:id="tblStudent" layoutX="23.0" layoutY="279.0" prefHeight="274.0" prefWidth="853.0" stylesheets="@../styles/place_order.css">
+      <TableView fx:id="tblReserve" layoutX="23.0" layoutY="279.0" prefHeight="274.0" prefWidth="853.0" stylesheets="@../styles/place_order.css">
          <columns>
-            <TableColumn fx:id="colStuId" prefWidth="101.0" text="Student ID " />
-            <TableColumn fx:id="colStuName" prefWidth="171.0" text="Student Name" />
-            <TableColumn fx:id="colStuAddress" prefWidth="165.0" text="Student Address " />
-            <TableColumn fx:id="colContactNum" prefWidth="164.0" text="Contact Number" />
-            <TableColumn fx:id="colDob" minWidth="0.0" prefWidth="140.0" text="Date of Birth" />
-            <TableColumn fx:id="colSex" minWidth="0.0" prefWidth="109.0" text="Sex" />
+            <TableColumn fx:id="colResId" prefWidth="155.0" text="Reserve ID " />
+            <TableColumn fx:id="colStuId" prefWidth="180.0" text="Student Name" />
+            <TableColumn fx:id="colRoomNo" prefWidth="193.0" text="Room Number " />
+            <TableColumn fx:id="colDate" prefWidth="177.0" text="Date" />
+            <TableColumn fx:id="colKeyMoney" prefWidth="145.0" text="Key Money (LKR) :" />
          </columns>
          <styleClass>
             <String fx:value="table-cell" />
@@ -97,16 +98,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </JFXButton>
-      <JFXComboBox fx:id="cmbSex" labelFloat="true" layoutX="534.0" layoutY="175.0" prefHeight="38.0" prefWidth="226.0" promptText="Sex :" styleClass="combo" stylesheets="@../styles/place_order.css" />
-      <JFXTextField fx:id="txtDob" labelFloat="true" layoutX="294.0" layoutY="182.0" onKeyReleased="#textFields_Key_Released" prefHeight="31.0" prefWidth="226.0" promptText="Date of Birth :">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </JFXTextField>
-      <JFXTextField fx:id="txtContactNo" labelFloat="true" layoutX="53.0" layoutY="182.0" onKeyReleased="#textFields_Key_Released" prefHeight="31.0" prefWidth="226.0" promptText="Contact Number :">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </JFXTextField>
+      <JFXComboBox fx:id="cmbRoomNum" labelFloat="true" layoutX="424.0" layoutY="175.0" prefHeight="38.0" prefWidth="336.0" promptText="Room Number  :" styleClass="combo" stylesheets="@../styles/place_order.css" />
+      <JFXComboBox fx:id="cmbStudentId" labelFloat="true" layoutX="54.0" layoutY="174.0" prefHeight="38.0" prefWidth="336.0" promptText="Student ID  :" styleClass="combo" stylesheets="@../styles/place_order.css" />
    </children>
 </AnchorPane>

@@ -1,13 +1,18 @@
 package controller;
 
 import bo.BOFactory;
+import bo.custom.StudentBO;
 import bo.impl.StudentBOImpl;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import dao.custom.StudentDAO;
+import dao.impl.StudentDAOImpl;
 import dto.StudentDTO;
 import entity.Room;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -25,69 +31,154 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import util.FactoryConfiguration;
+import view.tm.StudentTM;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import static com.jfoenix.svg.SVGGlyphLoader.clear;
+
 public class StudentFormController{
+    
+    public TableView<StudentTM> tblStudent;
+
+    private final StudentBO studentBO = (StudentBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.STUDENT);
+    public AnchorPane root;
     public JFXTextField txtStudentId;
     public JFXTextField txtStudentName;
     public JFXTextField txtStudentAddress;
-    public JFXButton btnSave;
-    public JFXButton btnUpdate;
-    public JFXButton btnDelete;
-    public JFXComboBox cmbKeyMoney;
-    public AnchorPane root;
     public TableColumn colStuId;
     public TableColumn colStuName;
     public TableColumn colStuAddress;
-    public TableColumn colRoomNum;
-    public TableColumn colKeyMoneyStat;
-    public TableView tblStudent;
-    public JFXComboBox cmbRoomNum;
-
-//    StudentBOImpl studentBOImpl = BOFactory.getInstance().getBO(BOType.STUDENT);
-private final StudentBOImpl studentBOImpl = (StudentBOImpl) BOFactory.getBOFactory().getBO(BOFactory.BoTypes.STUDENT);
+    public TableColumn colContactNum;
+    public TableColumn colDob;
+    public TableColumn colSex;
+    public JFXButton btnSave;
+    public JFXButton btnUpdate;
+    public JFXButton btnDelete;
+    public JFXComboBox cmbSex;
+    public JFXTextField txtDob;
+    public JFXTextField txtContactNo;
 
     public void initialize(){
-        ObservableList keyMoney = FXCollections.observableArrayList("Payed","Later");
-        cmbKeyMoney.getItems().addAll(keyMoney);
+        ObservableList keyMoney = FXCollections.observableArrayList("Male","Female");
+        cmbSex.getItems().addAll(keyMoney);
 
-        ObservableList roomsNo = FXCollections.observableArrayList();
-        Session session = FactoryConfiguration.getInstance().getSession();
-        Transaction transaction = session.beginTransaction();
-        String hql = "FROM Room";
-        Query query = session.createQuery(hql);
-        List<Room> roomList = query.list();
+        txtStudentId.setText(generateNewId());
+        txtStudentId.setDisable(true);
 
-        for (Room rooms : roomList) {
-            roomsNo.add(rooms.getRoom_id());
+        colStuId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colStuName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        colStuAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colContactNum.setCellValueFactory(new PropertyValueFactory<>("contactNo"));
+        colDob.setCellValueFactory(new PropertyValueFactory<>("dob"));
+        colSex.setCellValueFactory(new PropertyValueFactory<>("sex"));
+
+        loadAllStudents();
+//        storeValidations();
+
+        tblStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                txtStudentId.setText(newValue.getId());
+                txtStudentName.setText(newValue.getFullName());
+                txtStudentAddress.setText(newValue.getAddress());
+                txtContactNo.setText(newValue.getContactNo());
+                txtDob.setText(newValue.getDob());
+                cmbSex.setValue(String.valueOf(newValue.getSex()));
+                txtStudentId.setDisable(true);
+                btnSave.setDisable(true);
+            }
+        });
+    }
+
+    private String getLastStudentId() {
+        List<StudentTM> tempStudentList = new ArrayList<>(tblStudent.getItems());
+        Collections.sort(tempStudentList);
+        return tempStudentList.get(tempStudentList.size() - 1).getId();
+    }
+
+    private void loadAllStudents() {
+        tblStudent.getItems().clear();
+        try {
+            ArrayList<StudentDTO> allStudent = studentBO.getAllStudent();
+            for (StudentDTO student : allStudent) {
+                tblStudent.getItems().add(new StudentTM(student.getId(),student.getFullName(),student.getAddress(),student.getContactNo(),student.getDob(),student.getSex()));
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
-        transaction.commit();
-        session.close();
-        cmbRoomNum.getItems().addAll(roomsNo);
+    }
+
+    private String generateNewId() {
+        try {
+            return studentBO.generateNewID();
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to generate a new id " + e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+        if (tblStudent.getItems().isEmpty()) {
+            return "S001";
+        } else {
+            String id = getLastStudentId();
+            int newStudentId = Integer.parseInt(id.replace("S", "")) + 1;
+            return String.format("S%03d", newStudentId);
+        }
     }
 
     public void clearFields() {
         txtStudentId.setText(null);
         txtStudentName.setText(null);
         txtStudentAddress.setText(null);
-        cmbRoomNum.setValue(null);
-        cmbKeyMoney.setValue(null);
+        txtContactNo.setText(null);
+        txtDob.setText(null);
+        cmbSex.setValue(null);
     }
 
     public void btnDelete_OnAction(ActionEvent actionEvent) {
+        String id = tblStudent.getSelectionModel().getSelectedItem().getId();
+        try {
+            if (!existStudent(id)) {
+                new Alert(Alert.AlertType.ERROR, "There is no such course associated with the id " + id).show();
+            }else{
+                new Alert(Alert.AlertType.CONFIRMATION, "Deleted...!").show();
+                studentBO.delete(id);
+                tblStudent.getItems().remove(tblStudent.getSelectionModel().getSelectedItem());
+                tblStudent.getSelectionModel().clearSelection();
+                clearFields();
+                txtStudentId.setText(generateNewId());
+                btnSave.setDisable(false);
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to delete the course " + id).show();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    boolean existStudent(String id) throws SQLException, ClassNotFoundException {
+        return studentBO.ifStudentExist(id);
     }
 
     public void btnUpdate_OnAction(ActionEvent actionEvent) {
         String id = txtStudentId.getText();
         String name = txtStudentName.getText();
         String address = txtStudentAddress.getText();
-        String roomNum = cmbRoomNum.getValue().toString();
-        String keyMoney = cmbKeyMoney.getValue().toString();
+        String contactNo = txtContactNo.getText();
+        String dob = txtDob.getText();
+        String sex = cmbSex.getValue().toString();
         try {
-            if(studentBOImpl.update(new StudentDTO(id, name, address,roomNum,keyMoney))) {
+            if(studentBO.update(new StudentDTO(id, name, address,contactNo,dob,sex))) {
                 new Alert(Alert.AlertType.CONFIRMATION, "Updated.!").show();
                 clearFields();
             } else {
@@ -96,17 +187,20 @@ private final StudentBOImpl studentBOImpl = (StudentBOImpl) BOFactory.getBOFacto
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Something Happened").show();
         }
+        loadAllStudents();
+        txtStudentId.setText(generateNewId());
     }
 
     public void btnSave_OnAction(ActionEvent actionEvent) {
         String id = txtStudentId.getText();
         String name = txtStudentName.getText();
         String address = txtStudentAddress.getText();
-        String roomNum = cmbRoomNum.getValue().toString();
-        String keyMoney = cmbKeyMoney.getValue().toString();
+        String contactNo = txtContactNo.getText();
+        String dob = txtDob.getText();
+        String sex = cmbSex.getValue().toString();
 
         try {
-            if (studentBOImpl.add(new StudentDTO(id, name, address,roomNum,keyMoney))) {
+            if (studentBO.add(new StudentDTO(id, name, address,contactNo,dob,sex))) {
                 new Alert(Alert.AlertType.CONFIRMATION, "Saved.!").show();
                 clearFields();
             }
@@ -114,7 +208,8 @@ private final StudentBOImpl studentBOImpl = (StudentBOImpl) BOFactory.getBOFacto
             System.out.println(e);
             new Alert(Alert.AlertType.ERROR, "Something Happened. try again carefully!").showAndWait();
         }
-
+        loadAllStudents();
+        txtStudentId.setText(generateNewId());
     }
 
     public void textFields_Key_Released(KeyEvent keyEvent) {
@@ -122,7 +217,7 @@ private final StudentBOImpl studentBOImpl = (StudentBOImpl) BOFactory.getBOFacto
     }
 
     public void navigateToHome(MouseEvent mouseEvent) throws IOException {
-        URL resource = this.getClass().getResource("/view/DashboardForm.fxml");
+        URL resource = this.getClass().getResource("/view/ReserveForm.fxml");
         Parent root = FXMLLoader.load(resource);
         Scene scene = new Scene(root);
         Stage primaryStage = (Stage) (this.root.getScene().getWindow());
@@ -144,4 +239,6 @@ private final StudentBOImpl studentBOImpl = (StudentBOImpl) BOFactory.getBOFacto
         primaryStage.centerOnScreen();
         Platform.runLater(() -> primaryStage.sizeToScene());
     }
+
+
 }

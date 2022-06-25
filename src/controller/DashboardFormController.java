@@ -33,8 +33,8 @@ public class DashboardFormController {
 
             switch (icon.getId()) {
                 case "imgStudent":
-                    lblMenu.setText("Manage Student");
-                    lblDescription.setText("Click to add, update, delete or view Student");
+                    lblMenu.setText("Reserve Room");
+                    lblDescription.setText("Click to add, update, delete or view Reservations");
                     break;
                 case "imgRooms":
                     lblMenu.setText("View Rooms");
@@ -82,7 +82,7 @@ public class DashboardFormController {
 
             switch (icon.getId()) {
                 case "imgStudent":
-                    root = FXMLLoader.load(this.getClass().getResource("/view/StudentForm.fxml"));
+                    root = FXMLLoader.load(this.getClass().getResource("/view/ReserveForm.fxml"));
                     break;
                 case "imgRooms":
                     root = FXMLLoader.load(this.getClass().getResource("/view/RoomForm.fxml"));
