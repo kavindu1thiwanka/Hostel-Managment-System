@@ -2,17 +2,12 @@ package controller;
 
 import bo.BOFactory;
 import bo.custom.StudentBO;
-import bo.impl.StudentBOImpl;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-import dao.custom.StudentDAO;
-import dao.impl.StudentDAOImpl;
 import dto.StudentDTO;
-import entity.Room;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,20 +22,15 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
-import util.FactoryConfiguration;
 import view.tm.StudentTM;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.jfoenix.svg.SVGGlyphLoader.clear;
 
 public class StudentFormController{
     
@@ -61,8 +51,9 @@ public class StudentFormController{
     public JFXButton btnUpdate;
     public JFXButton btnDelete;
     public JFXComboBox cmbSex;
-    public JFXTextField txtDob;
+
     public JFXTextField txtContactNo;
+    public JFXDatePicker txtDob;
 
     public void initialize(){
         ObservableList keyMoney = FXCollections.observableArrayList("Male","Female");
@@ -79,15 +70,13 @@ public class StudentFormController{
         colSex.setCellValueFactory(new PropertyValueFactory<>("sex"));
 
         loadAllStudents();
-//        storeValidations();
 
         tblStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 txtStudentId.setText(newValue.getId());
                 txtStudentName.setText(newValue.getFullName());
                 txtStudentAddress.setText(newValue.getAddress());
-                txtContactNo.setText(newValue.getContactNo());
-                txtDob.setText(newValue.getDob());
+                txtContactNo.setText(newValue.getContactNo());txtDob.setValue(LocalDate.parse(newValue.getDob()));
                 cmbSex.setValue(String.valueOf(newValue.getSex()));
                 txtStudentId.setDisable(true);
                 btnSave.setDisable(true);
@@ -106,7 +95,7 @@ public class StudentFormController{
         try {
             ArrayList<StudentDTO> allStudent = studentBO.getAllStudent();
             for (StudentDTO student : allStudent) {
-                tblStudent.getItems().add(new StudentTM(student.getId(),student.getFullName(),student.getAddress(),student.getContactNo(),student.getDob(),student.getSex()));
+                tblStudent.getItems().add(new StudentTM(student.getId(),student.getFullName(),student.getAddress(),student.getContactNo(),student.getDob(),student.getGender()));
             }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -139,7 +128,7 @@ public class StudentFormController{
         txtStudentName.setText(null);
         txtStudentAddress.setText(null);
         txtContactNo.setText(null);
-        txtDob.setText(null);
+        txtDob.setValue(null);
         cmbSex.setValue(null);
     }
 
@@ -175,7 +164,7 @@ public class StudentFormController{
         String name = txtStudentName.getText();
         String address = txtStudentAddress.getText();
         String contactNo = txtContactNo.getText();
-        String dob = txtDob.getText();
+        String dob = String.valueOf(txtDob.getValue());
         String sex = cmbSex.getValue().toString();
         try {
             if(studentBO.update(new StudentDTO(id, name, address,contactNo,dob,sex))) {
@@ -196,7 +185,7 @@ public class StudentFormController{
         String name = txtStudentName.getText();
         String address = txtStudentAddress.getText();
         String contactNo = txtContactNo.getText();
-        String dob = txtDob.getText();
+        String dob = String.valueOf(txtDob.getValue());
         String sex = cmbSex.getValue().toString();
 
         try {

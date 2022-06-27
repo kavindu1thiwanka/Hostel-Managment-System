@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
@@ -97,16 +98,12 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </JFXButton>
-      <JFXComboBox fx:id="cmbSex" labelFloat="true" layoutX="534.0" layoutY="175.0" prefHeight="38.0" prefWidth="226.0" promptText="Sex :" styleClass="combo" stylesheets="@../styles/place_order.css" />
-      <JFXTextField fx:id="txtDob" labelFloat="true" layoutX="294.0" layoutY="182.0" onKeyReleased="#textFields_Key_Released" prefHeight="31.0" prefWidth="226.0" promptText="Date of Birth :">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font>
-      </JFXTextField>
+      <JFXComboBox fx:id="cmbSex" labelFloat="true" layoutX="534.0" layoutY="175.0" prefHeight="38.0" prefWidth="226.0" promptText="Gender :" styleClass="combo" stylesheets="@../styles/place_order.css" />
       <JFXTextField fx:id="txtContactNo" labelFloat="true" layoutX="53.0" layoutY="182.0" onKeyReleased="#textFields_Key_Released" prefHeight="31.0" prefWidth="226.0" promptText="Contact Number :">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
       </JFXTextField>
+      <JFXDatePicker fx:id="txtDob" layoutX="294.0" layoutY="175.0" prefHeight="38.0" prefWidth="226.0" promptText="Date of Birth :" stylesheets="@../styles/place_order.css" />
    </children>
 </AnchorPane>

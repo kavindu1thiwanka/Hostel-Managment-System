@@ -55,9 +55,10 @@
       </Pane>
       <TableView fx:id="tblKeyMoney" layoutX="23.0" layoutY="84.0" prefHeight="458.0" prefWidth="853.0" stylesheets="@../styles/place_order.css">
          <columns>
-            <TableColumn fx:id="colId" prefWidth="260.0" text="Student ID " />
-            <TableColumn fx:id="colName" prefWidth="353.0" text="Student Name" />
-            <TableColumn fx:id="colRoomNum" prefWidth="239.0" text="Room Number" />
+            <TableColumn fx:id="colId" prefWidth="221.0" text="Student ID " />
+            <TableColumn fx:id="colName" prefWidth="252.0" text="Student Name" />
+            <TableColumn fx:id="colContact" minWidth="0.0" prefWidth="209.0" text="Contact Number" />
+            <TableColumn fx:id="colRoomNum" minWidth="0.0" prefWidth="168.0" text="Room Number" />
          </columns>
          <styleClass>
             <String fx:value="table-cell" />

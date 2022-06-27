@@ -21,7 +21,7 @@ private final StudentDAOImpl studentDAO = (StudentDAOImpl) DAOFactory.getDAOFact
         ArrayList<StudentDTO> allStudent = new ArrayList<>();
         ArrayList<Student> all = studentDAO.getAll();
         for (Student program : all) {
-            allStudent.add(new StudentDTO(program.getId(),program.getFullName(),program.getAddress(),program.getContactNo(),program.getDob(),program.getSex()));
+            allStudent.add(new StudentDTO(program.getId(),program.getFullName(),program.getAddress(),program.getContactNo(),program.getDob(),program.getGender()));
         }
         return allStudent;
     }
@@ -34,7 +34,7 @@ private final StudentDAOImpl studentDAO = (StudentDAOImpl) DAOFactory.getDAOFact
                 studentDTO.getAddress(),
                 studentDTO.getContactNo(),
                 studentDTO.getDob(),
-                studentDTO.getSex()
+                studentDTO.getGender()
         ));
     }
 
@@ -46,7 +46,7 @@ private final StudentDAOImpl studentDAO = (StudentDAOImpl) DAOFactory.getDAOFact
                 studentDTO.getAddress(),
                 studentDTO.getContactNo(),
                 studentDTO.getDob(),
-                studentDTO.getSex()
+                studentDTO.getGender()
         ));
     }
 

@@ -1,5 +1,8 @@
 package controller;
 
+import bo.BOFactory;
+import bo.custom.ReserveBO;
+import dto.KeyMoneyDTO;
 import dto.StudentDTO;
 import entity.Room;
 import javafx.application.Platform;
@@ -36,27 +39,31 @@ public class KeyMoneyFormController {
     public TableColumn colName;
     public TableColumn colRoomNum;
 
+    private final ReserveBO reserveBO = (ReserveBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.RESERVE);
+    public TableColumn colContact;
+
     public void initialize(){
 
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        colContact.setCellValueFactory(new PropertyValueFactory<>("contact"));
         colRoomNum.setCellValueFactory(new PropertyValueFactory<>("room_id"));
 
-        loadAllStudents();
+        loadAllPendingKm();
     }
 
-    private void loadAllStudents() {
-//        tblKeyMoney.getItems().clear();
-//        try {
-//            ArrayList<StudentDTO> allStudent = studentBO.getAllStudent();
-//            for (StudentDTO student : allStudent) {
-//                tblStudent.getItems().add(new StudentTM(student.getId(),student.getFullName(),student.getAddress(),student.getRoomNum(),student.getKeyMoneyStatus()));
-//            }
-//        } catch (SQLException e) {
-//            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-//        } catch (ClassNotFoundException e) {
-//            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-//        }
+    private void loadAllPendingKm() {
+        tblKeyMoney.getItems().clear();
+        try {
+            ArrayList<KeyMoneyDTO> allKeyMoney = reserveBO.getPendingKM();
+            for (KeyMoneyDTO student : allKeyMoney) {
+                tblKeyMoney.getItems().add(new KeyMoneyTM(student.getId(),student.getFullName(),student.getContact(),student.getRoom_id()));
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } catch (ClassNotFoundException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
 

@@ -1,6 +1,7 @@
 package bo;
 
 
+import bo.impl.LoginBOImpl;
 import bo.impl.ReserveBOImpl;
 import bo.impl.RoomBOImpl;
 import bo.impl.StudentBOImpl;
@@ -27,12 +28,14 @@ public class BOFactory {
                 return new RoomBOImpl();
             case RESERVE:
                 return new ReserveBOImpl();
+            case LOGIN:
+                return new LoginBOImpl();
             default:
                 return null;
         }
     }
 
     public enum BOTypes {
-        STUDENT, ROOM ,RESERVE
+        STUDENT, ROOM ,RESERVE,LOGIN
     }
 }

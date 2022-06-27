@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.custom.StudentDAO;
+import entity.Room;
 import entity.Student;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -61,6 +62,16 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     @Override
+    public Student get(String s) throws Exception {
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        Student student = session.get(Student.class, s);
+        transaction.commit();
+        session.close();
+        return student;
+    }
+
+    @Override
     public String generateNewID(){
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
@@ -77,14 +88,20 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public ArrayList<Student> getAll() throws SQLException, ClassNotFoundException {
-        ArrayList<Student> allStudent = new ArrayList();
+//        ArrayList<Student> allStudent = new ArrayList();
+//        Session session = FactoryConfiguration.getInstance().getSession();
+//        Transaction transaction = session.beginTransaction();
+//        Query query = session.createQuery("FROM student ");
+//        allStudent = (ArrayList<Student>) query.list();
+//        transaction.commit();
+//        session.close();
+//        return allStudent;
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("FROM student ");
-        allStudent = (ArrayList<Student>) query.list();
+        List<Student> list = session.createQuery("FROM student ").list();
         transaction.commit();
         session.close();
-        return allStudent;
+        return (ArrayList<Student>) list;
     }
 
     @Override

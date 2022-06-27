@@ -41,6 +41,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.time.LocalDate.now;
 
@@ -64,6 +65,7 @@ public class ReserveFormController {
 
     private final ReserveBO reserveBO = (ReserveBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.RESERVE);
     private final RoomBO roomBO = (RoomBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.ROOM);
+    private final StudentBO sBO = (StudentBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.STUDENT);
 
     public void initialize(){
 
@@ -74,6 +76,7 @@ public class ReserveFormController {
         ObservableList students = FXCollections.observableArrayList();
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
+
         String hql = "FROM Room";
         String hql2 = "FROM student";
         Query query = session.createQuery(hql);
@@ -85,7 +88,8 @@ public class ReserveFormController {
             roomsNo.add(rooms.getRoom_id());
         }
         for (Student student : studentList) {
-            students.add(student.getFullName());
+//            students.add(student.getId()+" - "+student.getFullName());
+            students.add(student.getId());
         }
         transaction.commit();
         session.close();
@@ -98,15 +102,15 @@ public class ReserveFormController {
         colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         colKeyMoney.setCellValueFactory(new PropertyValueFactory<>("key_money"));
 
+
         loadAllReserve();
-//        storeValidations();
 
         tblReserve.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 txtReserveId.setText(newValue.getRes_id());
                 txtKeyMoney.setText(String.valueOf(newValue.getKey_money()));
-                cmbStudentId.setValue(newValue.getStudent_id());
-                cmbRoomNum.setValue(newValue.getRoom_id());
+                cmbStudentId.setValue(newValue.getStudent());
+                cmbRoomNum.setValue(newValue.getRoom());
                 txtReserveId.setDisable(true);
                 btnSave.setDisable(true);
             }
@@ -119,7 +123,7 @@ public class ReserveFormController {
         try {
             ArrayList<ReserveDTO> allReserve = reserveBO.getAllReserve();
             for (ReserveDTO reserve : allReserve) {
-                tblReserve.getItems().add(new ReserveTM(reserve.getRes_id(),reserve.getDate(),reserve.getKey_money(),reserve.getStudent_id(),reserve.getRoom_id()));
+                tblReserve.getItems().add(new ReserveTM(reserve.getRes_id(),reserve.getDate(),reserve.getKey_money(),reserve.getStudent().getFullName(),reserve.getRoom().getRoom_id()));
             }
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -128,56 +132,22 @@ public class ReserveFormController {
         }
     }
 
-    public void btnSave_OnAction(ActionEvent actionEvent) {
-        String rId = txtReserveId.getText();
-        double kM = Double.parseDouble(txtKeyMoney.getText());
-        String sName = cmbStudentId.getValue().toString();
-        String rmId = cmbRoomNum.getValue().toString();
-        String date= now().toString();
+    public void btnSave_OnAction(ActionEvent actionEvent) throws Exception {
+
+        String a=cmbStudentId.getValue().toString();
+        String v=cmbRoomNum.getValue().toString();
+        System.out.println(txtReserveId.getText());
+        System.out.println(now());
+        System.out.println(Double.parseDouble(txtKeyMoney.getText()));
+        System.out.println(a);
+        System.out.println(v);
+
 
 
         try {
-            if (reserveBO.add(new ReserveDTO(rId, date, kM,sName,rmId))) {
+            if (reserveBO.add(new ReserveDTO(txtReserveId.getText(), now().toString(), Double.parseDouble(txtKeyMoney.getText()),
+                    reserveBO.getStudentDetails(cmbStudentId.getValue().toString()), reserveBO.getRoomDetails(cmbRoomNum.getValue().toString())))) {
                 new Alert(Alert.AlertType.CONFIRMATION, "Saved.!").show();
-                Session session = FactoryConfiguration.getInstance().getSession();
-                Transaction transaction = session.beginTransaction();
-                try {
-                    System.out.println("999999999999");
-                    Query query1 = session.createQuery("SELECT room_qty FROM Room WHERE room_id=:rmId");
-                    System.out.println("dadadwdawdadadadadad");
-                    //////////////////////////////////////////////////////////
-                    ////////////////////////////////////////////////////////////
-                    ///////////////////////////////////////////////////////
-                    /////////////////////////////////////////////////////////
-                    ////////////////////////////////////////////////////
-                    ////////////////////////////////////////////////////////
-                    ///////////////////////////////////////////////////////////
-                    /////////////////////////////////////////////////////////////
-                    //////////////////////////////////////////////////////////
-                    ////////////////////////////////////////////////////////////
-                    ///////////////////////////////////////////////////////
-                    /////////////////////////////////////////////////////////
-                    ////////////////////////////////////////////////////
-                    ////////////////////////////////////////////////////////
-                    ///////////////////////////////////////////////////////////
-                    /////////////////////////////////////////////////////////////
-                    //////////////////////////////////////////////////////////
-                    ////////////////////////////////////////////////////////////
-                    ///////////////////////////////////////////////////////
-                    /////////////////////////////////////////////////////////
-                    ////////////////////////////////////////////////////
-                    ////////////////////////////////////////////////////////
-                    ///////////////////////////////////////////////////////////
-                    /////////////////////////////////////////////////////////////
-                    Query query = session.createQuery("UPDATE Room SET room_qty=:sn WHERE room_id =:rmId");
-                    System.out.println("11111111111111111111111000000000000");
-                }catch (Exception e){
-                    System.out.println(e);
-                }
-
-                transaction.commit();
-                session.close();
-
                 clearFields();
             }
         } catch (Exception e) {
@@ -228,7 +198,7 @@ public class ReserveFormController {
         String date = now().toString();
 
         try {
-            if(reserveBO.update(new ReserveDTO(rId, date ,kM,sName,rmId)))  {
+            if(reserveBO.update(new ReserveDTO(rId, date ,kM,reserveBO.getStudentDetails(sName), reserveBO.getRoomDetails(rmId))))  {
                 new Alert(Alert.AlertType.CONFIRMATION, "Updated.!").show();
                 clearFields();
             } else {

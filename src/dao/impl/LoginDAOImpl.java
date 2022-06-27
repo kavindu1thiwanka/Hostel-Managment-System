@@ -1,7 +1,6 @@
 package dao.impl;
 
 import dao.custom.LoginDAO;
-import dao.custom.StudentDAO;
 import entity.Login;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -17,22 +16,25 @@ public class LoginDAOImpl implements LoginDAO {
 //    }
 
     @Override
-    public Login userSearch(String userName, String Password) throws SQLException, ClassNotFoundException {
+    public boolean userSearch(String userName, String Password) throws SQLException, ClassNotFoundException {
 
+        boolean login=false;
         Session session = FactoryConfiguration.getInstance().getSession();
-        Query query= (Query) session.createQuery("from Login where userName=:username and password=:password");
-        query.setParameter("userName", userName);
+        Query query= (Query) session.createQuery("SELECT userName,password from Login where userName=:username and password=:password");
+        query.setParameter("username", userName);
         query.setParameter("password", Password);
-        Login user=(Login)query.uniqueResult();
+        Object user=  query.uniqueResult();
         if(user!=null) {
             System.out.println("username and password are valid");
+            login=true;
         }else {
+            login=false;
             System.out.println("username and password are not valid");
         }
 
         session.close();
 
-        return new Login(userName,Password);
+        return login;
     }
 
     @Override
@@ -58,5 +60,10 @@ public class LoginDAOImpl implements LoginDAO {
     @Override
     public List<Login> findAll() throws Exception {
         throw new UnsupportedOperationException("Not Supported Yet");
+    }
+
+    @Override
+    public Login get(String s) throws Exception {
+        return null;
     }
 }

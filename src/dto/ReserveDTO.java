@@ -11,7 +11,7 @@ public class ReserveDTO {
     private String res_id;
     private String date;
     private double key_money;
-    private String student_id;
-    private String room_id;
+    private StudentDTO student;
+    private RoomDTO room;
 
 }

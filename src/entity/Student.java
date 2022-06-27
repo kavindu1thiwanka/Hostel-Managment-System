@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +22,17 @@ public class Student implements SuperEntity{
     private String contactNo;
     @Column(columnDefinition = "DATE")
     private String dob;
-    private String sex;
+    private String gender;
 
+    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER/*,cascade = CascadeType.ALL*/)
+    private List<Reserve> resList = new ArrayList<>();
 
+    public Student(String id, String fullName, String address, String contactNo, String dob, String gender) {
+        this.id = id;
+        this.fullName = fullName;
+        this.address = address;
+        this.contactNo = contactNo;
+        this.dob = dob;
+        this.gender = gender;
+    }
 }
