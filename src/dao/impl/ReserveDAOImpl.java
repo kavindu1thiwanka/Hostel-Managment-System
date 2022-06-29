@@ -142,10 +142,6 @@ public class ReserveDAOImpl implements ReserveDAO {
             ));
         }
 
-        System.out.println("aasas");
-        System.out.println(allPending);
-        System.out.println("aasas");
-
         return allPending;
     }
 }

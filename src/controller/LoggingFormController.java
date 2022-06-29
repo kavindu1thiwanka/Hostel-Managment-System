@@ -50,15 +50,6 @@ public class LoggingFormController implements Initializable {
         else{
             lblError.setText("Enter correct username or password");
         }
-
-//        if (UserName.equals("user") && Password.equals("1234")){
-//            URL resource = getClass().getResource("../view/DashboardForm.fxml");
-//            Parent load = FXMLLoader.load(resource);
-//            Stage window = (Stage) context.getScene().getWindow();
-//            window.setScene(new Scene(load));
-//
-//        }else
-//            lblError.setText("Enter correct username or password");
     }
 
     public void goToCanclePage(ActionEvent actionEvent) {

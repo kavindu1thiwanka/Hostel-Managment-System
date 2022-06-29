@@ -13,7 +13,6 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardFormController">
    <children>
       <Label fx:id="lblMenu" alignment="CENTER" layoutY="434.0" prefHeight="51.0" prefWidth="900.0" text="Welcome" textAlignment="CENTER" textFill="#0a39f7">
@@ -65,5 +64,13 @@
             <Image url="@../assert/checklist.png" />
          </image>
       </ImageView>
+      <JFXButton ellipsisString="" layoutX="24.0" layoutY="13.0" onAction="#openChangeLoginOnAction" onMouseClicked="#navigateToHome" prefHeight="27.0" prefWidth="178.0" ripplerFill="#d0d0d0" style="-fx-background-radius: 360; -fx-background-color: #f6ff13;" text="Change Login Details" textOverrun="CLIP">
+         <graphic>
+            <FontAwesomeIconView glyphName="COG" size="15" wrappingWidth="16.85715389251709" />
+         </graphic>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

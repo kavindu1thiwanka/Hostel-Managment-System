@@ -116,8 +116,17 @@ public class DashboardFormController {
         Platform.runLater(() -> primaryStage.sizeToScene());
     }
 
-
     public void closeWindowOnAction(ActionEvent actionEvent) {
         javafx.application.Platform.exit();
+    }
+
+    public void openChangeLoginOnAction(ActionEvent actionEvent) throws IOException {
+        URL resource = this.getClass().getResource("/view/ChangeLoginForm.fxml");
+        Parent root = FXMLLoader.load(resource);
+        Scene scene = new Scene(root);
+        Stage primaryStage = (Stage) (this.root.getScene().getWindow());
+        primaryStage.setScene(scene);
+        primaryStage.centerOnScreen();
+        Platform.runLater(() -> primaryStage.sizeToScene());
     }
 }
