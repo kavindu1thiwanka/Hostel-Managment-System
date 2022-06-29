@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import dao.DAOFactory;
 import dao.custom.LoginDAO;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import entity.Login;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.hibernate.Session;
@@ -34,6 +37,8 @@ public class LoggingFormController implements Initializable {
     public JFXPasswordField txtPassword;
     public Label lblError;
     public AnchorPane context;
+    public FontAwesomeIconView showPwIcon;
+    public JFXTextField txtShowPassword;
 
     private final LoginBO login = (LoginBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.LOGIN);
 
@@ -74,5 +79,34 @@ public class LoggingFormController implements Initializable {
             transaction.commit();
         }
         session.close();
+        txtShowPassword.setVisible(false);
+    }
+
+    public void showPassword_OnAction(ActionEvent actionEvent) {
+        if (showPwIcon.getGlyphName().equals("EYE")){
+            System.out.println("show");
+            txtShowPassword.setText(txtPassword.getText());
+            txtShowPassword.setVisible(true);
+            txtPassword.setVisible(false);
+
+        }else {
+            System.out.println("hide");
+            txtPassword.setText(txtShowPassword.getText());
+            txtShowPassword.setVisible(false);
+            txtPassword.setVisible(true);
+        }
+    }
+
+    public void iconChange_OnMouseClick(MouseEvent mouseEvent) {
+        if (showPwIcon.getGlyphName().equals("EYE")){
+            showPwIcon.setGlyphName("EYE_SLASH");
+        }else if(showPwIcon.getGlyphName().equals("EYE_SLASH")) {
+            showPwIcon.setGlyphName("EYE");
+        }
+    }
+
+    public void setValueToPasswordField(KeyEvent keyEvent) {
+        txtPassword.setText(txtShowPassword.getText());
+        System.out.println(txtPassword.getText());
     }
 }

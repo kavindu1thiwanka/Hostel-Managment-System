@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.ColorAdjust?>
@@ -35,7 +36,6 @@
                </font>
             </Text>
             <JFXTextField fx:id="txtUserName" layoutX="118.0" layoutY="205.0" onAction="#goToPassword" prefHeight="36.0" prefWidth="226.0" promptText="Username" />
-            <JFXPasswordField fx:id="txtPassword" layoutX="118.0" layoutY="275.0" onAction="#goToLoginPage" prefHeight="36.0" prefWidth="226.0" promptText="Password" />
             <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="80.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assert/User_Icon.png" />
@@ -82,6 +82,16 @@
                   <Font size="14.0" />
                </font>
             </Label>
+            <JFXTextField fx:id="txtShowPassword" layoutX="118.0" layoutY="275.0" onKeyReleased="#setValueToPasswordField" prefHeight="36.0" prefWidth="226.0" promptText="Password" />
+            <JFXPasswordField fx:id="txtPassword" layoutX="118.0" layoutY="275.0" onAction="#goToLoginPage" prefHeight="36.0" prefWidth="226.0" promptText="Password" />
+            <JFXButton alignment="CENTER" contentDisplay="CENTER" ellipsisString="" graphicTextGap="0.0" layoutX="304.0" layoutY="282.0" onAction="#showPassword_OnAction" onMouseClicked="#iconChange_OnMouseClick" prefHeight="30.0" prefWidth="40.0" ripplerFill="#cdcdcd" style="-fx-background-color: white;" textAlignment="CENTER" textFill="TRANSPARENT">
+               <graphic>
+                  <FontAwesomeIconView fx:id="showPwIcon" glyphName="EYE" size="25" />
+               </graphic>
+               <font>
+                  <Font size="1.0" />
+               </font>
+            </JFXButton>
          </children>
       </Pane>
    </children>
