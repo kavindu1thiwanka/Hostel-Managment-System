@@ -84,13 +84,11 @@ public class LoggingFormController implements Initializable {
 
     public void showPassword_OnAction(ActionEvent actionEvent) {
         if (showPwIcon.getGlyphName().equals("EYE")){
-            System.out.println("show");
             txtShowPassword.setText(txtPassword.getText());
             txtShowPassword.setVisible(true);
             txtPassword.setVisible(false);
 
         }else {
-            System.out.println("hide");
             txtPassword.setText(txtShowPassword.getText());
             txtShowPassword.setVisible(false);
             txtPassword.setVisible(true);

@@ -67,4 +67,6 @@ public class ChangePasswordFormController {
     public void goToRePassword(ActionEvent actionEvent) {
         txtRePassword.requestFocus();
     }
+
+
 }

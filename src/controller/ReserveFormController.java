@@ -22,7 +22,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -31,6 +33,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import util.FactoryConfiguration;
+import util.ValidationUtil;
 import view.tm.ReserveTM;
 import view.tm.StudentTM;
 
@@ -40,7 +43,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.time.LocalDate.now;
@@ -104,6 +109,7 @@ public class ReserveFormController {
 
 
         loadAllReserve();
+        storeValidations();
 
         tblReserve.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -239,9 +245,6 @@ public class ReserveFormController {
         return reserveBO.ifReserveExist(id);
     }
 
-    public void textFields_Key_Released(KeyEvent keyEvent) {
-    }
-
     public void navigateToHome(MouseEvent mouseEvent) throws IOException {
         URL resource = this.getClass().getResource("/view/DashboardForm.fxml");
         Parent root = FXMLLoader.load(resource);
@@ -274,5 +277,25 @@ public class ReserveFormController {
         primaryStage.setScene(scene);
         primaryStage.centerOnScreen();
         Platform.runLater(() -> primaryStage.sizeToScene());
+    }
+
+    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap();
+    Pattern price = Pattern.compile("^[0-9]{1,30}$");
+
+    private void storeValidations() {
+        map.put(txtKeyMoney, price);
+    }
+
+    public void textFields_Key_Released(KeyEvent keyEvent) {
+        Object response = ValidationUtil.validate(map,btnSave);
+
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (response instanceof TextField) {
+                TextField errorText = (TextField) response;
+                errorText.requestFocus();
+            } else if (response instanceof Boolean) {
+                //new Alert(Alert.AlertType.INFORMATION, "Added").showAndWait();
+            }
+        }
     }
 }

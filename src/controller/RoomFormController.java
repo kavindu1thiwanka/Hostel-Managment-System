@@ -17,11 +17,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import util.ValidationUtil;
 import view.tm.RoomTM;
 import view.tm.StudentTM;
 
@@ -29,6 +32,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.regex.Pattern;
 
 public class RoomFormController {
     public AnchorPane root;
@@ -58,7 +63,7 @@ public class RoomFormController {
         colQty.setCellValueFactory(new PropertyValueFactory<>("room_qty"));
 
         loadAllStudents();
-//        storeValidations();
+        storeValidations();
 
         tblRoom.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -117,9 +122,6 @@ public class RoomFormController {
 
     public void closeWindowOnAction(ActionEvent actionEvent) {
         javafx.application.Platform.exit();
-    }
-
-    public void textFields_Key_Released(KeyEvent keyEvent) {
     }
 
     public void btnDelete_OnAction(ActionEvent actionEvent) {
@@ -194,6 +196,30 @@ public class RoomFormController {
     public void setTextOnMouseClick(MouseEvent mouseEvent) {
         if (txtRoomId.getText().equals("")){
             txtRoomId.setText("RM-");
+        }
+    }
+
+    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap();
+    Pattern roomId = Pattern.compile("^RM-[0-9]{4}$");
+    Pattern qty = Pattern.compile("^[0-9]{1,10}$");
+    Pattern price = Pattern.compile("^[0-9]{1,30}$");
+
+    private void storeValidations() {
+        map.put(txtRoomId, roomId);
+        map.put(txtQty, qty);
+        map.put(txtMonthlyRent, price);
+    }
+
+    public void textFields_Key_Released(KeyEvent keyEvent) {
+        Object response = ValidationUtil.validate(map,btnSave);
+
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (response instanceof TextField) {
+                TextField errorText = (TextField) response;
+                errorText.requestFocus();
+            } else if (response instanceof Boolean) {
+                //new Alert(Alert.AlertType.INFORMATION, "Added").showAndWait();
+            }
         }
     }
 }

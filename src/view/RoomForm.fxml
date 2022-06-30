@@ -67,7 +67,7 @@
             <String fx:value="table-row-cell" />
          </styleClass>
       </TableView>
-      <JFXTextField fx:id="txtRoomId" labelFloat="true" layoutX="53.0" layoutY="76.0" onMouseClicked="#setTextOnMouseClick" prefHeight="29.0" prefWidth="707.0" promptText="Room ID :">
+      <JFXTextField fx:id="txtRoomId" labelFloat="true" layoutX="53.0" layoutY="76.0" onKeyReleased="#textFields_Key_Released" onMouseClicked="#setTextOnMouseClick" prefHeight="29.0" prefWidth="707.0" promptText="Room ID :">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -93,7 +93,7 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </JFXTextField>
-      <JFXTextField fx:id="txtMonthlyRent" labelFloat="true" layoutX="53.0" layoutY="183.0" prefHeight="29.0" prefWidth="707.0" promptText="Monthly Rental (LKR) :">
+      <JFXTextField fx:id="txtMonthlyRent" labelFloat="true" layoutX="53.0" layoutY="183.0" onKeyReleased="#textFields_Key_Released" prefHeight="29.0" prefWidth="707.0" promptText="Monthly Rental (LKR) :">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>

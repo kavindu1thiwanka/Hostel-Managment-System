@@ -17,11 +17,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import util.ValidationUtil;
 import view.tm.StudentTM;
 
 import java.io.IOException;
@@ -30,12 +33,13 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class StudentFormController{
     
     public TableView<StudentTM> tblStudent;
-
     private final StudentBO studentBO = (StudentBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.STUDENT);
     public AnchorPane root;
     public JFXTextField txtStudentId;
@@ -70,6 +74,7 @@ public class StudentFormController{
         colSex.setCellValueFactory(new PropertyValueFactory<>("sex"));
 
         loadAllStudents();
+        storeValidations();
 
         tblStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -201,10 +206,6 @@ public class StudentFormController{
         txtStudentId.setText(generateNewId());
     }
 
-    public void textFields_Key_Released(KeyEvent keyEvent) {
-
-    }
-
     public void navigateToHome(MouseEvent mouseEvent) throws IOException {
         URL resource = this.getClass().getResource("/view/ReserveForm.fxml");
         Parent root = FXMLLoader.load(resource);
@@ -229,5 +230,27 @@ public class StudentFormController{
         Platform.runLater(() -> primaryStage.sizeToScene());
     }
 
+    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap();
+    Pattern namePattern = Pattern.compile("^[A-z ]{3,20}$");
+    Pattern phoneNoPattern = Pattern.compile("^[0-9]{10}$");
+    Pattern addressPattern = Pattern.compile("^[A-z0-9, .]{1,30}$");
 
+    private void storeValidations() {
+        map.put(txtStudentName, namePattern);
+        map.put(txtStudentAddress, addressPattern);
+        map.put(txtContactNo, phoneNoPattern);
+    }
+
+    public void textFields_Key_Released(KeyEvent keyEvent) {
+        Object response = ValidationUtil.validate(map,btnSave);
+
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (response instanceof TextField) {
+                TextField errorText = (TextField) response;
+                errorText.requestFocus();
+            } else if (response instanceof Boolean) {
+                //new Alert(Alert.AlertType.INFORMATION, "Added").showAndWait();
+            }
+        }
+    }
 }
