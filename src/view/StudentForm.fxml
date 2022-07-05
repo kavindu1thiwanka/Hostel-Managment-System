@@ -46,7 +46,7 @@
          </children>
       </Pane>
       <JFXButton contentDisplay="CENTER" ellipsisString="" layoutX="20.0" layoutY="13.0" onMouseClicked="#navigateToHome" prefHeight="24.0" prefWidth="49.0" ripplerFill="WHITE" style="-fx-background-radius: 360;" textFill="TRANSPARENT" textOverrun="CLIP" />
-      <JFXTextField fx:id="txtStudentId" labelFloat="true" layoutX="53.0" layoutY="76.0" prefHeight="29.0" prefWidth="707.0" promptText="Student ID :">
+      <JFXTextField fx:id="txtStudentId" labelFloat="true" layoutX="53.0" layoutY="76.0" onKeyReleased="#textFields_Key_Released" onMouseClicked="#setTextOnMouseClick" prefHeight="29.0" prefWidth="707.0" promptText="Student ID :">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>

@@ -63,8 +63,8 @@ public class StudentFormController{
         ObservableList keyMoney = FXCollections.observableArrayList("Male","Female");
         cmbSex.getItems().addAll(keyMoney);
 
-        txtStudentId.setText(generateNewId());
-        txtStudentId.setDisable(true);
+//        txtStudentId.setText(generateNewId());
+//        txtStudentId.setDisable(true);
 
         colStuId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colStuName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
@@ -89,11 +89,11 @@ public class StudentFormController{
         });
     }
 
-    private String getLastStudentId() {
-        List<StudentTM> tempStudentList = new ArrayList<>(tblStudent.getItems());
-        Collections.sort(tempStudentList);
-        return tempStudentList.get(tempStudentList.size() - 1).getId();
-    }
+//    private String getLastStudentId() {
+//        List<StudentTM> tempStudentList = new ArrayList<>(tblStudent.getItems());
+//        Collections.sort(tempStudentList);
+//        return tempStudentList.get(tempStudentList.size() - 1).getId();
+//    }
 
     private void loadAllStudents() {
         tblStudent.getItems().clear();
@@ -109,24 +109,24 @@ public class StudentFormController{
         }
     }
 
-    private String generateNewId() {
-        try {
-            return studentBO.generateNewID();
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Failed to generate a new id " + e.getMessage()).show();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
-        if (tblStudent.getItems().isEmpty()) {
-            return "S001";
-        } else {
-            String id = getLastStudentId();
-            int newStudentId = Integer.parseInt(id.replace("S", "")) + 1;
-            return String.format("S%03d", newStudentId);
-        }
-    }
+//    private String generateNewId() {
+//        try {
+//            return studentBO.generateNewID();
+//        } catch (SQLException e) {
+//            new Alert(Alert.AlertType.ERROR, "Failed to generate a new id " + e.getMessage()).show();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        if (tblStudent.getItems().isEmpty()) {
+//            return "S001";
+//        } else {
+//            String id = getLastStudentId();
+//            int newStudentId = Integer.parseInt(id.replace("S", "")) + 1;
+//            return String.format("S%03d", newStudentId);
+//        }
+//    }
 
     public void clearFields() {
         txtStudentId.setText(null);
@@ -148,7 +148,7 @@ public class StudentFormController{
                 tblStudent.getItems().remove(tblStudent.getSelectionModel().getSelectedItem());
                 tblStudent.getSelectionModel().clearSelection();
                 clearFields();
-                txtStudentId.setText(generateNewId());
+//                txtStudentId.setText(generateNewId());
                 btnSave.setDisable(false);
             }
         } catch (SQLException e) {
@@ -182,7 +182,7 @@ public class StudentFormController{
             new Alert(Alert.AlertType.ERROR, "Something Happened").show();
         }
         loadAllStudents();
-        txtStudentId.setText(generateNewId());
+//        txtStudentId.setText(generateNewId());
     }
 
     public void btnSave_OnAction(ActionEvent actionEvent) {
@@ -203,7 +203,7 @@ public class StudentFormController{
             new Alert(Alert.AlertType.ERROR, "Something Happened. try again carefully!").showAndWait();
         }
         loadAllStudents();
-        txtStudentId.setText(generateNewId());
+//        txtStudentId.setText(generateNewId());
     }
 
     public void navigateToHome(MouseEvent mouseEvent) throws IOException {
@@ -231,11 +231,13 @@ public class StudentFormController{
     }
 
     LinkedHashMap<TextField, Pattern> map = new LinkedHashMap();
+    Pattern studentId =Pattern.compile("^S[0-9]{3}$");
     Pattern namePattern = Pattern.compile("^[A-z ]{3,20}$");
     Pattern phoneNoPattern = Pattern.compile("^[0-9]{10}$");
     Pattern addressPattern = Pattern.compile("^[A-z0-9, .]{1,30}$");
 
     private void storeValidations() {
+        map.put(txtStudentId, studentId);
         map.put(txtStudentName, namePattern);
         map.put(txtStudentAddress, addressPattern);
         map.put(txtContactNo, phoneNoPattern);
@@ -251,6 +253,12 @@ public class StudentFormController{
             } else if (response instanceof Boolean) {
                 //new Alert(Alert.AlertType.INFORMATION, "Added").showAndWait();
             }
+        }
+    }
+
+    public void setTextOnMouseClick(MouseEvent mouseEvent) {
+        if (txtStudentId.getText().equals("")){
+            txtStudentId.setText("S");
         }
     }
 }

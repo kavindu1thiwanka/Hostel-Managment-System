@@ -8,7 +8,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import dto.ReserveDTO;
-import dto.StudentDTO;
 import entity.Reserve;
 import entity.Room;
 import entity.Student;
@@ -35,18 +34,15 @@ import org.hibernate.query.Query;
 import util.FactoryConfiguration;
 import util.ValidationUtil;
 import view.tm.ReserveTM;
-import view.tm.StudentTM;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static java.time.LocalDate.now;
 
@@ -56,7 +52,7 @@ public class ReserveFormController {
     public JFXTextField txtReserveId;
     public JFXTextField txtKeyMoney;
     public TableView<Reserve> tblReserve;
-    public TableColumn colResId;
+    public TableColumn<Object, Object> colResId;
     public TableColumn colStuId;
     public TableColumn colRoomNo;
     public TableColumn colKeyMoney;
@@ -69,8 +65,6 @@ public class ReserveFormController {
     public TableColumn colDate;
 
     private final ReserveBO reserveBO = (ReserveBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.RESERVE);
-    private final RoomBO roomBO = (RoomBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.ROOM);
-    private final StudentBO sBO = (StudentBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.STUDENT);
 
     public void initialize(){
 
@@ -115,8 +109,8 @@ public class ReserveFormController {
             if (newValue != null) {
                 txtReserveId.setText(newValue.getRes_id());
                 txtKeyMoney.setText(String.valueOf(newValue.getKey_money()));
-                cmbStudentId.setValue(newValue.getStudent());
                 cmbRoomNum.setValue(newValue.getRoom());
+                cmbStudentId.setValue(newValue.getStudent());
                 txtReserveId.setDisable(true);
                 btnSave.setDisable(true);
             }
@@ -279,7 +273,7 @@ public class ReserveFormController {
         Platform.runLater(() -> primaryStage.sizeToScene());
     }
 
-    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap();
+    LinkedHashMap<TextField, Pattern> map = new LinkedHashMap<>();
     Pattern price = Pattern.compile("^[0-9]{1,30}$");
 
     private void storeValidations() {
